@@ -1,0 +1,6 @@
+@APISipinnaBackend_HostAddress = http://localhost:5095
+
+GET {{APISipinnaBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
