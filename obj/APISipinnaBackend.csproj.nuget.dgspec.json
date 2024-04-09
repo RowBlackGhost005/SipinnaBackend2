@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {}
+    "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {
+    "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
+        "projectUniqueName": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj",
         "projectName": "APISipinnaBackend",
-        "projectPath": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
-        "packagesPath": "C:\\Users\\lamar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\obj\\",
+        "projectPath": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj",
+        "packagesPath": "C:\\Users\\rjsaa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lamar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\rjsaa\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -41,6 +41,30 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "MySql.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
