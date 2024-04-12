@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APISipinnaBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ad1d404a530c185a8bf429e5fa86baea7e7cefe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec132c0a5e5bcbf025278f601f9577e015c3460e")]
 [assembly: System.Reflection.AssemblyProductAttribute("APISipinnaBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APISipinnaBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

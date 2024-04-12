@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {}
+    "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {}
   },
   "projects": {
-    "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {
+    "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
+        "projectUniqueName": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
         "projectName": "APISipinnaBackend",
-        "projectPath": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
+        "projectPath": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
         "packagesPath": "C:\\Users\\lamar\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\obj\\",
+        "outputPath": "C:\\Users\\lamar\\Desktop\\APISipinnaBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lamar\\AppData\\Roaming\\NuGet\\NuGet.Config"
