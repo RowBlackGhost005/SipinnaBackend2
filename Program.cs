@@ -11,7 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Conexiones>(opt =>
     opt.UseMySQL(cadena));
 
-builder.Services.AddTransient<DominioDAO>();    
+//Transients
+builder.Services.AddTransient<DominioDAO>();
+builder.Services.AddTransient<NoticiasDAO>();
 
 
 // Add services to the container.
