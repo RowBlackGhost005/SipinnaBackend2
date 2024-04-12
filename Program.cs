@@ -1,8 +1,18 @@
 using SipinnaBackend2.Models;
 using Microsoft.EntityFrameworkCore;
 
+var allowLocalHost = "localhostOrigin";
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowLocalHost,
+    policy =>
+    {
+        policy.WithOrigins("http://localhost");
+    });
+});
 
 // Add services to the container.
 string? cadena = builder.Configuration.GetConnectionString("DefaultConnection") ?? "otracadena";
@@ -11,7 +21,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Conexiones>(opt =>
     opt.UseMySQL(cadena));
 
-builder.Services.AddTransient<DominioDAO>();    
+//Transients
+builder.Services.AddTransient<DominioDAO>();
+builder.Services.AddTransient<NoticiasDAO>();
+builder.Services.AddTransient<IndicadorDAO>();     
 
 
 // Add services to the container.
@@ -21,6 +34,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCors(allowLocalHost);
 //create database if not exists
 using (var serviceScope = app.Services.CreateScope())
 {
