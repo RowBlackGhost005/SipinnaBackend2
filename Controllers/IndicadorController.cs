@@ -57,7 +57,7 @@ namespace APISipinnaBackend.Controllers
 
             ArchivosManejo archivosM = new ArchivosManejo(); 
             archivosM.eliminarArchivo(indicador.metadato);
-            var ruta = await archivosM.guardarArchivo(metadato);
+            var ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
 
             Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
             indicador.nombre = nombre;
@@ -79,7 +79,7 @@ namespace APISipinnaBackend.Controllers
             }
 
             ArchivosManejo archivosM = new ArchivosManejo();
-            var ruta = await archivosM.guardarArchivo(metadato);
+            var ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
             
            Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
            Indicador indicador = new Indicador(0,nombre,ruta,dominio);
@@ -108,7 +108,7 @@ namespace APISipinnaBackend.Controllers
 
         [HttpGet]
         [Route("descargas")]
-        public async Task<FileStream> downloadMetadato(string ruta){
+        public async Task<IActionResult> downloadMetadato(string ruta){
             ArchivosManejo archivosM = new ArchivosManejo();
             return await archivosM.obtenerArchivo(ruta);
         }
