@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
+using System.IO;
 
 namespace SipinnaBackend2.Utils;
 
-public class ArchivosManejo{
+public class ArchivosManejo : ControllerBase{
 
     public ArchivosManejo(){
 
     }
 
-    public async Task<string> guardarArchivo(IFormFile xls){
-        var carpeta = "Metadatos"; 
-        var ruta = Path.Combine(carpeta, "");
+    public async Task<string> guardarArchivo(IFormFile xls,string carpeta){
+        var carpetaLocal = carpeta; 
+        var ruta = Path.Combine(carpetaLocal, "");
 
         if (!Directory.Exists(ruta)){
             Directory.CreateDirectory(ruta);
@@ -36,7 +37,7 @@ public class ArchivosManejo{
     public async Task<string> eliminarArchivo(string nombreArchivo){
 
         try{
-           File.Delete(nombreArchivo);
+           System.IO.File.Delete(nombreArchivo);
         }catch (Exception ex){
            throw; 
         }
@@ -44,11 +45,11 @@ public class ArchivosManejo{
         return "archivo eliminado con exito";
     }
 
-    public async Task<FileStream> obtenerArchivo(string ruta){
-
-        if (File.Exists(ruta)){
-           var stream = new FileStream(ruta, FileMode.Open);
-           return stream;
+    public async Task<IActionResult> obtenerArchivo(string ruta){
+   
+        if (System.IO.File.Exists(ruta)){
+            var fileBytes = System.IO.File.ReadAllBytes(ruta);
+            return File(fileBytes, "application/vnd.ms-excel", "archivo.xls");
         }else{
            throw new FileNotFoundException("No se encontro el archivo", ruta);
         }

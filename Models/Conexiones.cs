@@ -31,6 +31,8 @@ public class Conexiones : DbContext{
         modelBuilder.Entity<Rubro>().ToTable("rubro");
         modelBuilder.Entity<RubrosIndicador>().ToTable("rubros-indicador");
         modelBuilder.Entity<Usuarios>().ToTable("usuarios");
+
+  
         
     }
 
