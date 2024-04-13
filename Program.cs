@@ -21,9 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Conexiones>(opt =>
     opt.UseMySQL(cadena));
 
+//Transients
 builder.Services.AddTransient<DominioDAO>();
-builder.Services.AddTransient<IndicadorDAO>();   
-builder.Services.AddTransient<RubrosDAO>();  
+builder.Services.AddTransient<NoticiasDAO>();
+builder.Services.AddTransient<IndicadorDAO>();     
+builder.Services.AddTransient<RubrosDAO>();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
