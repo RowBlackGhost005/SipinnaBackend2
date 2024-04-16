@@ -8,6 +8,11 @@ public class RubrosDAO{
         _context = context;
     }
 
+    /// <summary>
+    /// Obtiene todos los rubros almacenados en la base de datos
+    /// </summary>
+    /// <returns>Rubros en formato de lista</returns>
+    /// <exception cref="Exception">Excepcion si ocurre algun error durante la operacion</exception>
     public async Task<IEnumerable<Rubro>> getRubro(){
         try{
             return await _context.rubroTbl.ToListAsync();
@@ -16,6 +21,12 @@ public class RubrosDAO{
         }
     }
 
+    /// <summary>
+    /// Obtiene un rubro por su id enviado como parametro
+    /// </summary>
+    /// <param name="id">Id del rubro</param>
+    /// <returns>rubro encontrado</returns>
+    /// <exception cref="Exception">Excepcion si no se encuentra el rubro</exception>
     public async Task<Rubro> getRubroId(Int32 id){
         try{
             var rubro = await _context.rubroTbl.FindAsync(id);
@@ -31,6 +42,13 @@ public class RubrosDAO{
         }
     }
 
+    /// <summary>
+    /// Obtiene todos los rubros que esten relacionados a un indicador y a un rubro
+    /// Mediante el id del indicador especificado
+    /// </summary>
+    /// <param name="idindicador">id del indicador con el que se relaciona el rubro</param>
+    /// <returns>lista de rubros</returns>
+    /// <exception cref="Exception">Excepcion si ocurre un error durante la consulta</exception>
     public async Task<IEnumerable<Rubro>> getRubroIndicadorId(Int32 idindicador){
         try{
             var resultadoConsulta = from rubrosindicador in _context.rubrosIndicadorTbl
@@ -51,7 +69,12 @@ public class RubrosDAO{
         }
     }
 
-    //pendiente
+    /// <summary>
+    /// Actualiza un rubro con los datos recibidos en el paremtro
+    /// </summary>
+    /// <param name="rubro">datos a actualizar</param>
+    /// <returns>1 si se realizo la operacion con exito</returns>
+    /// <exception cref="Exception">Excepcion si ocurre un error durante la operacion</exception>
     public async Task<int> updateRubro(Rubro rubro){
         try{
             if (!RubroExists(rubro.idrubro))
@@ -69,7 +92,12 @@ public class RubrosDAO{
         }
     }
 
-    
+    /// <summary>
+    /// Almacena un nuevo rubro sin referencia de indicador en la base de datos
+    /// </summary>
+    /// <param name="rubro">rubro a almacenar</param>
+    /// <returns>regresa el rubro creado</returns>
+    /// <exception cref="Exception">Excepcion si ocurre algun error durante la transaccion</exception>
     public async Task<Rubro> createRubro(Rubro rubro){
         //TODO: create rubroindicador
         try{
@@ -85,6 +113,13 @@ public class RubrosDAO{
 
     }
 
+    /// <summary>
+    /// Crea un rubro junto con su referencia de indicador en la base de datos
+    /// </summary>
+    /// <param name="rubro">rubro a almacenar en la base de datos</param>
+    /// <param name="idindicador">id del indicador relacionado a este rubro</param>
+    /// <returns>el rubro almacenado en la base de datos</returns>
+    /// <exception cref="Exception">Excepcion si ocurre algun error durante la operacion</exception>
     public async Task<Rubro> createRubroIndicador(Rubro rubro,int idindicador){
         //TODO: create rubroindicador
         try{
@@ -109,6 +144,12 @@ public class RubrosDAO{
 
     }    
 
+    /// <summary>
+    /// Elimina un rubro de la base de datos (eliminacion en cascasda)
+    /// </summary>
+    /// <param name="rubro">rubro a eliminar en la base de datos</param>
+    /// <returns>regresa un string con el estado de la operacion</returns>
+    /// <exception cref="Exception">Excepcion si ocurre un error durante la operacion</exception>
     public async Task<string> deleteRubro(Rubro rubro) {
 
         try{
@@ -126,6 +167,11 @@ public class RubrosDAO{
 
     }
 
+    /// <summary>
+    /// Verifica si un rubro dado existe por el parametro de su id
+    /// </summary>
+    /// <param name="id">id del rubro a verificar</param>
+    /// <returns>True si existe, False de lo contrario</returns>
     public bool RubroExists(int id){
         return _context.rubroTbl.Any(e => e.idrubro == id);
     } 
