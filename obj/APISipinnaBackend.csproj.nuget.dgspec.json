@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {}
+    "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj": {}
   },
   "projects": {
-    "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj": {
+    "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
+        "projectUniqueName": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj",
         "projectName": "APISipinnaBackend",
-        "projectPath": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\APISipinnaBackend.csproj",
-        "packagesPath": "C:\\Users\\lamar\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lamar\\Desktop\\APISipinnaBackend\\obj\\",
+        "projectPath": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\APISipinnaBackend.csproj",
+        "packagesPath": "C:\\Users\\rjsaa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rjsaa\\Documents\\net\\sipinnabackend2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lamar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\rjsaa\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

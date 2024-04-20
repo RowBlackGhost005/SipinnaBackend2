@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
+using SipinnaBackend2.DTO;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -22,48 +23,87 @@ namespace APISipinnaBackend.Controllers
 
         // GET: api/Dominio
         [HttpGet]
-        public async Task<IEnumerable<Dominio>> GetdominioTbl()
-        {
-            return await dominiodao.getDominio();
+        public async Task<ActionResult<IEnumerable<Dominio>>> GetdominioTbl()
+        {  
+            return Ok(await dominiodao.getDominio());
         }
 
         // GET: api/Dominio/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Dominio>> GetDominio(int id)
         {
-            var dominio = await dominiodao.getDominioId(id);
+            try{
+               var dominio = await dominiodao.getDominioId(id);
 
-            return dominio;
+                if(dominio == null){
+                  return NotFound();
+                }
+
+               return Ok(dominio);
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+            
+
+
         }
 
         // PUT: api/Dominio/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<int> PutDominio(Dominio dominio){
+        public async Task<ActionResult<Dominio>> PutDominio(DominioDTO dominio,int id){
 
-            var dominioActualizado = await dominiodao.updateDominio(dominio);
+            try{
+              var dominioActualizado = await dominiodao.updateDominio(dominio,id);
 
-            return dominioActualizado;
+              return Ok(dominioActualizado);
+            }catch(Exception e){
+                if(!dominiodao.DominioExists(id)){
+                    return NotFound();
+                }else{
+                    return BadRequest(e.Message);
+                }
+                
+            }
+            
+            
    
         }
 
         // POST: api/Dominio
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Dominio>> PostDominio(Dominio dominio)
+        public async Task<ActionResult<Dominio>> PostDominio(DominioDTO dominiodto)
         {
-            var dominioCreado = await dominiodao.createDominio(dominio);
 
-            return dominioCreado;
+            try{
+                Dominio dominio = new Dominio(0,dominiodto.nombre);
+
+                var dominioCreado = await dominiodao.createDominio(dominio);
+
+                return Ok(dominioCreado);    
+
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
         // DELETE: api/Dominio/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteDominio(int id)
+        public async Task<ActionResult<bool>> deleteDominio(int id)
         {
-            await dominiodao.deleteDominio(id);
+            try{
+                var estado = await dominiodao.deleteDominio(id);
 
-            return NoContent();
+               if(estado == false){
+                  return NotFound();
+                }
+            
+                return Ok(true);
+                
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
     }

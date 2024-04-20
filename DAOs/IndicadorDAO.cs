@@ -31,9 +31,8 @@ public class IndicadorDAO{
         try{
             var indicador = await _context.indicadorTbl.FindAsync(id);
 
-            if (!IndicadorExists(id))
-            {
-                throw new Exception("no se encontro el indicador con ese id");
+            if(indicador == null){
+                throw new Exception("No existe indicador con id especificado");
             }
 
             return indicador;
@@ -48,20 +47,15 @@ public class IndicadorDAO{
     /// <param name="indicador">Datos recibidos a actualizar</param>
     /// <returns>1 si se realizo la actualizacion con exito</returns>
     /// <exception cref="Exception">Excepcion si la operacion falla o no se encontro el indicador</exception>
-    public async Task<int> updateIndicador(Indicador indicador){
-        try{
-            if (!IndicadorExists(indicador.idindicador))
-            {
-                throw new Exception("no se encontro el indicador con ese id");
-            }
-            
+    public async Task<Indicador> updateIndicador(Indicador indicador){
+        try{            
             indicador.dominioNav = await _context.dominioTbl.FindAsync(indicador.dominioNav.iddominio);
             
             _context.Entry(indicador).State = EntityState.Modified;
 
-            var indicadorActualizado = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return indicadorActualizado;
+            return indicador;
         }catch(Exception ex){
             throw new Exception(ex.Message);
         }
@@ -94,17 +88,17 @@ public class IndicadorDAO{
     /// <param name="indicador">indicador a eliminar</param>
     /// <returns>regresa string con estado de la operacion</returns>
     /// <exception cref="Exception">Excepcion si ocurre algun error durante la operacion</exception>
-    public async Task<string> deleteIndicador(Indicador indicador) {
+    public async Task<bool> deleteIndicador(Indicador indicador) {
 
         try{
           if (!IndicadorExists(indicador.idindicador)){
-              return "no se encontro el indicador";
+              return false;
           }
 
           _context.indicadorTbl.Remove(indicador);
           await _context.SaveChangesAsync();
 
-          return "eliminado con exito";
+          return true;
         }catch(Exception ex){
           throw new Exception(ex.Message);
         }

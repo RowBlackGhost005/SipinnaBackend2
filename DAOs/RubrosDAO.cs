@@ -31,7 +31,7 @@ public class RubrosDAO{
         try{
             var rubro = await _context.rubroTbl.FindAsync(id);
 
-            if (!RubroExists(id))
+            if (rubro == null)
             {
                 throw new Exception("no se encontro el rubro con ese id");
             }
@@ -50,6 +50,7 @@ public class RubrosDAO{
     /// <returns>lista de rubros</returns>
     /// <exception cref="Exception">Excepcion si ocurre un error durante la consulta</exception>
     public async Task<IEnumerable<Rubro>> getRubroIndicadorId(Int32 idindicador){
+
         try{
             var resultadoConsulta = from rubrosindicador in _context.rubrosIndicadorTbl
                 join indicador in _context.indicadorTbl on rubrosindicador.indicador equals indicador.idindicador
@@ -75,7 +76,7 @@ public class RubrosDAO{
     /// <param name="rubro">datos a actualizar</param>
     /// <returns>1 si se realizo la operacion con exito</returns>
     /// <exception cref="Exception">Excepcion si ocurre un error durante la operacion</exception>
-    public async Task<int> updateRubro(Rubro rubro){
+    public async Task<Rubro> updateRubro(Rubro rubro){
         try{
             if (!RubroExists(rubro.idrubro))
             {
@@ -84,9 +85,9 @@ public class RubrosDAO{
             
             _context.Entry(rubro).State = EntityState.Modified;
 
-            var rubroActualizado = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return rubroActualizado;
+            return rubro;
         }catch(Exception ex){
             throw new Exception(ex.Message);
         }
@@ -148,19 +149,19 @@ public class RubrosDAO{
     /// Elimina un rubro de la base de datos (eliminacion en cascasda)
     /// </summary>
     /// <param name="rubro">rubro a eliminar en la base de datos</param>
-    /// <returns>regresa un string con el estado de la operacion</returns>
+    /// <returns>regresa un booleano con el estado de la operacion</returns>
     /// <exception cref="Exception">Excepcion si ocurre un error durante la operacion</exception>
-    public async Task<string> deleteRubro(Rubro rubro) {
+    public async Task<bool> deleteRubro(Rubro rubro) {
 
         try{
           if (!RubroExists(rubro.idrubro)){
-              return "no se encontro el rubro";
+              return false;
           }
 
           _context.rubroTbl.Remove(rubro);
           await _context.SaveChangesAsync();
 
-          return "eliminado con exito";
+          return true;
         }catch(Exception ex){
           throw new Exception(ex.Message);
         }

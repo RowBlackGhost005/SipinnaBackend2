@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
-
+using SipinnaBackend2.DTO;
 public class DominioDAO{
     
     private readonly Conexiones _context;
@@ -36,11 +36,6 @@ public class DominioDAO{
         try{
             var dominio = await _context.dominioTbl.FindAsync(id);
 
-            if (!DominioExists(id))
-            {
-                throw new Exception("no se encontro el dominio con ese id");
-            }
-
             return dominio;
         }catch(Exception ex){
             throw new InvalidOperationException(ex.Message);
@@ -53,18 +48,25 @@ public class DominioDAO{
     /// <param name="dominio">Datos del dominio a actualizar</param>
     /// <returns>Dominio actualizado</returns>
     /// <exception cref="InvalidOperationException">Excepcion si no se pudo realizar la operacion</exception>
-    public async Task<int> updateDominio(Dominio dominio){
+    public async Task<Dominio> updateDominio(DominioDTO dominiodto,int id){
         try{
-            if (!DominioExists(dominio.iddominio))
-            {
-                throw new Exception("no se encontro el dominio con ese id");
+            Dominio dominio = await _context.dominioTbl.FindAsync(id);
+
+            if(dominio == null){
+                throw new Exception("No se encontro el dominio con ese id");
             }
+
+            if(dominiodto.nombre == ""){
+                throw new Exception("Valor nulo enviado");
+            }
+
+            dominio.nombre = dominiodto.nombre;
             
             _context.Entry(dominio).State = EntityState.Modified;
 
-            var dominioActualizado = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return dominioActualizado;
+            return dominio;
         }catch(Exception ex){
             throw new InvalidOperationException(ex.Message);
         }
@@ -96,11 +98,11 @@ public class DominioDAO{
     /// <param name="id">id del objeto dominio a eliminar</param>
     /// <returns>string con el resultado de la operacion</returns>
     /// <exception cref="InvalidOperationException">Excepcion si no se pudo realizar la operacion</exception>
-    public async Task<string> deleteDominio(int id) {
+    public async Task<bool> deleteDominio(int id) {
 
         try{
           if (!DominioExists(id)){
-              return "no se encontro el dominio";
+              return false;
           }
 
           Dominio dominio = new Dominio(id,"irrelevante");
@@ -108,7 +110,7 @@ public class DominioDAO{
           _context.dominioTbl.Remove(dominio);
           await _context.SaveChangesAsync();
 
-          return "eliminado con exito";
+          return true;
         }catch(Exception ex){
           throw new InvalidOperationException(ex.Message);
         }
@@ -120,7 +122,7 @@ public class DominioDAO{
     /// </summary>
     /// <param name="id">id del dominio a verificar</param>
     /// <returns>true si existe,false en caso contrario</returns>
-    private bool DominioExists(int id){
+    public bool DominioExists(int id){
         return _context.dominioTbl.Any(e => e.iddominio == id);
     }
 }

@@ -16,8 +16,6 @@ namespace APISipinnaBackend.Controllers
     {
         public readonly IndicadorDAO indicadordao;
 
-        
-
         public IndicadorController(IndicadorDAO indicadordao)
         {
             this.indicadordao = indicadordao;
@@ -26,31 +24,40 @@ namespace APISipinnaBackend.Controllers
 
         // GET: api/Indicador
         [HttpGet]
-        public async Task<IEnumerable<Indicador>> GetindicadorTbl()
+        public async Task<ActionResult<IEnumerable<Indicador>>> GetindicadorTbl()
         {
-            return await indicadordao.getIndicador();
+            try{
+               return Ok(await indicadordao.getIndicador());
+            }catch(Exception e){
+               return BadRequest(e.Message);
+            }
+            
         }
 
         // GET: api/Indicador/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Indicador>> GetIndicador(int id)
         {
-           var indicador = await indicadordao.getIndicadorId(id);
+           try{
+                var indicador = await indicadordao.getIndicadorId(id);
+                return Ok(indicador);
+           }catch(Exception e){
+                return BadRequest(e.Message);
+           }
 
-           return indicador;
         }
 
         // PUT: api/Indicador/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<int> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
+        public async Task<ActionResult<Indicador>> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
         {
             if(!indicadordao.IndicadorExists(id)){
-                return 0;
+                return BadRequest("No se encontro el indicador");
             }
 
             if (metadato == null){
-                return 0;
+                return BadRequest("No se envio el archivo de metadatos");
             }
 
             Indicador indicador = await indicadordao.getIndicadorId(id);
@@ -64,9 +71,15 @@ namespace APISipinnaBackend.Controllers
             indicador.metadato = ruta;
             indicador.dominioNav = dominio;
 
-            var indicadorActualizado = await indicadordao.updateIndicador(indicador);
+            try{
+               var indicadorActualizado = await indicadordao.updateIndicador(indicador);
 
-            return indicadorActualizado;
+               return Ok(indicadorActualizado);                
+
+            }catch(Exception e){
+               return BadRequest(e.Message);
+            }
+
         }
 
         // POST: api/Indicador
@@ -81,11 +94,17 @@ namespace APISipinnaBackend.Controllers
             ArchivosManejo archivosM = new ArchivosManejo();
             var ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
             
-           Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
-           Indicador indicador = new Indicador(0,nombre,ruta,dominio);
-           var indicadorCreado = await indicadordao.createIndicador(indicador);
+            Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
+            Indicador indicador = new Indicador(0,nombre,ruta,dominio);
+           
+            try{
+               var indicadorCreado = await indicadordao.createIndicador(indicador);
 
-           return indicadorCreado;
+               return Ok(indicadorCreado);
+            }catch(Exception e){
+               return BadRequest(e.Message);
+            }
+
         }
 
         // DELETE: api/Indicador/5
@@ -100,10 +119,15 @@ namespace APISipinnaBackend.Controllers
 
             ArchivosManejo archivosM = new ArchivosManejo();
             archivosM.eliminarArchivo(indicador.metadato);
+            
+            try{
+               await indicadordao.deleteIndicador(indicador);
+               return Ok(true);                
 
-            await indicadordao.deleteIndicador(indicador);
+            }catch(Exception e){
+               return BadRequest(e.Message);
+            }
 
-            return NoContent();
         }
 
         [HttpGet]

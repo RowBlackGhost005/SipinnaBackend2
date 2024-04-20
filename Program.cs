@@ -25,7 +25,8 @@ builder.Services.AddDbContext<Conexiones>(opt =>
 builder.Services.AddTransient<DominioDAO>();
 builder.Services.AddTransient<NoticiasDAO>();
 builder.Services.AddTransient<IndicadorDAO>();
-builder.Services.AddTransient<EnlacesDAO>();     
+builder.Services.AddTransient<EnlacesDAO>();
+builder.Services.AddTransient<RubrosDAO>();     
 
 
 // Add services to the container.
