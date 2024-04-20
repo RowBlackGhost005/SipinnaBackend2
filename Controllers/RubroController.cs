@@ -24,40 +24,52 @@ namespace APISipinnaBackend.Controllers
         
         // GET: api/Rubro
         [HttpGet]
-        public async Task<IEnumerable<Rubro>> GetrubroTbl()
+        public async Task<ActionResult<IEnumerable<Rubro>>> GetrubroTbl()
         {
-            return await rubrodao.getRubro();
+            try{
+              return Ok(await rubrodao.getRubro());
+            }catch(Exception e){
+              return BadRequest(e.Message);
+            }
+
         }
 
         // GET: api/Rubro/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Rubro>> GetRubro(int id)
         {
-            var rubro = await rubrodao.getRubroId(id);
-
-            return rubro;
+            try{
+              var rubro = await rubrodao.getRubroId(id);
+              return Ok(rubro);
+            }catch(Exception e){
+              return BadRequest(e.Message);
+            }
         }
         
-
         [HttpGet("rubroindicador/{id}")]
-        public async Task<IEnumerable<Rubro>> GetRubroIndicador(int id)
+        public async Task<ActionResult<IEnumerable<Rubro>>> GetRubroIndicador(int id)
         {
-            return await rubrodao.getRubroIndicadorId(id);
+            try{            
+               return Ok(await rubrodao.getRubroIndicadorId(id));
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
         
         // PUT: api/Rubro/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<int> PutRubro(int id,[FromForm] string rubro, [FromForm] IFormFile datos)
+        public async Task<ActionResult<Rubro>> PutRubro(int id,[FromForm] string rubro, [FromForm] IFormFile datos)
         {
             if (!rubrodao.RubroExists(id))
             {
-                return 0;
+                return BadRequest("No se ha encontrado el rubro");
             }
 
             if (datos == null){
-                return 0;
+                return BadRequest("No se ha enviado un archivo de datos");
             }            
 
             Rubro rubroObj = await rubrodao.getRubroId(id);
@@ -69,10 +81,15 @@ namespace APISipinnaBackend.Controllers
 
             rubroObj.rubro = rubro;
             rubroObj.datos = ruta;
+            try{
+              var rubroActualizado = await rubrodao.updateRubro(rubroObj);
 
-            var rubroActualizado = await rubrodao.updateRubro(rubroObj);
+              return Ok(rubroActualizado);
+            }catch(Exception e){
+              return BadRequest(e.Message);
+            }
 
-            return rubroActualizado;
+
         }
 
         
@@ -89,9 +106,15 @@ namespace APISipinnaBackend.Controllers
             var ruta = await archivosM.guardarArchivo(datos,"Datos");            
 
             Rubro rubroObj = new Rubro(0,rubro,ruta);
-            var rubroCreado = await rubrodao.createRubro(rubroObj);
 
-            return rubroCreado;
+            try{
+               var rubroCreado = await rubrodao.createRubro(rubroObj);
+
+               return Ok(rubroCreado);
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost]
@@ -106,19 +129,25 @@ namespace APISipinnaBackend.Controllers
             var ruta = await archivosM.guardarArchivo(datos,"Datos");            
 
             Rubro rubroObj = new Rubro(0,rubro,ruta);
-            var rubroCreado = await rubrodao.createRubroIndicador(rubroObj,idindicador);
 
-            return rubroCreado;
+            try{
+              var rubroCreado = await rubrodao.createRubroIndicador(rubroObj,idindicador);
+              return Ok(rubroCreado);                
+
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
         
 
         // DELETE: api/Rubro/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRubro(int id)
+        public async Task<ActionResult<bool>> DeleteRubro(int id)
         {
             if(!rubrodao.RubroExists(id)){
-                return BadRequest();
+                return BadRequest("No se encontro el rubro indicado");
             }
 
             Rubro rubro = await rubrodao.getRubroId(id);
@@ -126,9 +155,15 @@ namespace APISipinnaBackend.Controllers
             ArchivosManejo archivosM = new ArchivosManejo();
             archivosM.eliminarArchivo(rubro.datos);
 
-            await rubrodao.deleteRubro(rubro);
+            try{
+              var rubroEstado = await rubrodao.deleteRubro(rubro);
+              return Ok(rubroEstado);
+            }catch(Exception e){
+              return BadRequest(e.Message);
+            }
+            
 
-            return NoContent();
+            
         }
 
         [HttpGet]
