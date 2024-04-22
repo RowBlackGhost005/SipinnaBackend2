@@ -87,6 +87,7 @@ namespace APISipinnaBackend.Controllers
 
         }
 
+        /*
         // DELETE: api/Dominio/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> deleteDominio(int id)
@@ -105,6 +106,7 @@ namespace APISipinnaBackend.Controllers
             }
 
         }
+        */
 
     }
 }

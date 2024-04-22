@@ -61,26 +61,26 @@ namespace APISipinnaBackend.Controllers
         // PUT: api/Rubro/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<Rubro>> PutRubro(int id,[FromForm] string rubro, [FromForm] IFormFile datos)
+        public async Task<ActionResult<Rubro>> PutRubro(int id,[FromForm] string rubro, [FromForm] IFormFile? datos)
         {
             if (!rubrodao.RubroExists(id))
             {
                 return BadRequest("No se ha encontrado el rubro");
             }
 
-            if (datos == null){
-                return BadRequest("No se ha enviado un archivo de datos");
-            }            
-
             Rubro rubroObj = await rubrodao.getRubroId(id);
 
-            ArchivosManejo archivosM = new ArchivosManejo(); 
-            archivosM.eliminarArchivo(rubroObj.datos);
+            var ruta = "";
 
-            var ruta = await archivosM.guardarArchivo(datos,"Datos");
+            if (datos != null){
+                ArchivosManejo archivosM = new ArchivosManejo(); 
+                archivosM.eliminarArchivo(rubroObj.datos);
+                ruta = await archivosM.guardarArchivo(datos,"Datos");
+                rubroObj.datos = ruta;
+            }
 
             rubroObj.rubro = rubro;
-            rubroObj.datos = ruta;
+            
             try{
               var rubroActualizado = await rubrodao.updateRubro(rubroObj);
 
