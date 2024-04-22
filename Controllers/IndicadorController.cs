@@ -50,25 +50,29 @@ namespace APISipinnaBackend.Controllers
         // PUT: api/Indicador/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<Indicador>> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
+        public async Task<ActionResult<Indicador>> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile? metadato, [FromForm] string dominioNavId)
         {
+            //verifica si indicador existe
             if(!indicadordao.IndicadorExists(id)){
                 return BadRequest("No se encontro el indicador");
             }
 
-            if (metadato == null){
-                return BadRequest("No se envio el archivo de metadatos");
-            }
-
+            //obtiene el objeto indicador de la bd
             Indicador indicador = await indicadordao.getIndicadorId(id);
+       
+            //si se envio un archivo entonces crea el nuevo archivo en el servidor
+            //y actualiza la ruta en la base de datos
+            var ruta = "";
 
-            ArchivosManejo archivosM = new ArchivosManejo(); 
-            archivosM.eliminarArchivo(indicador.metadato);
-            var ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
+            if (metadato != null){
+                ArchivosManejo archivosM = new ArchivosManejo(); 
+                archivosM.eliminarArchivo(indicador.metadato);
+                ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
+                indicador.metadato = ruta;
+            }
 
             Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
             indicador.nombre = nombre;
-            indicador.metadato = ruta;
             indicador.dominioNav = dominio;
 
             try{
