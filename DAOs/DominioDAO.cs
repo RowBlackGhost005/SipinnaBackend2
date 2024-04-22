@@ -92,6 +92,7 @@ public class DominioDAO{
 
     }
 
+    /*
     /// <summary>
     /// Elimina un elemento dominio dentro de la base de datos que coincida con el id
     /// </summary>
@@ -116,7 +117,8 @@ public class DominioDAO{
         }
 
     }
-
+    */
+    
     /// <summary>
     /// Verifica si el dominio del id enviado existe
     /// </summary>

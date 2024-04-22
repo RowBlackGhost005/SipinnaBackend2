@@ -82,6 +82,7 @@ public class IndicadorDAO{
 
     }
 
+    /*
     /// <summary>
     /// Elimina un indicador de la base de datos
     /// </summary>
@@ -104,6 +105,7 @@ public class IndicadorDAO{
         }
 
     }
+    */
 
     /// <summary>
     /// Verifica si el indicador con el id enviado existe

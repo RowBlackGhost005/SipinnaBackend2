@@ -107,6 +107,7 @@ namespace APISipinnaBackend.Controllers
 
         }
 
+        /*
         // DELETE: api/Indicador/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIndicador(int id)
@@ -129,6 +130,7 @@ namespace APISipinnaBackend.Controllers
             }
 
         }
+        */
 
         [HttpGet]
         [Route("descargas")]
