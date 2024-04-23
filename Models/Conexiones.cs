@@ -22,6 +22,8 @@ public class Conexiones : DbContext{
 
     public DbSet<Usuarios> usuariosTbl {get;set;} = null!;
 
+    public DbSet<Log> logTbl {get;set;} = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder){
         //configurar tablas
         modelBuilder.Entity<Dominio>().ToTable("dominio");
@@ -31,6 +33,7 @@ public class Conexiones : DbContext{
         modelBuilder.Entity<Rubro>().ToTable("rubro");
         modelBuilder.Entity<RubrosIndicador>().ToTable("rubros-indicador");
         modelBuilder.Entity<Usuarios>().ToTable("usuarios");
+        modelBuilder.Entity<Log>().ToTable("log");
 
   
         
