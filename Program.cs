@@ -1,4 +1,5 @@
 using SipinnaBackend2.Models;
+using SipinnaBackend2.Services;
 using Microsoft.EntityFrameworkCore;
 
 var allowLocalHost = "localhostOrigin";
@@ -28,7 +29,8 @@ builder.Services.AddTransient<DominioDAO>();
 builder.Services.AddTransient<NoticiasDAO>();
 builder.Services.AddTransient<IndicadorDAO>();
 builder.Services.AddTransient<EnlacesDAO>();
-builder.Services.AddTransient<RubrosDAO>();     
+builder.Services.AddTransient<RubrosDAO>(); 
+builder.Services.AddTransient<LoggerBD>();    
 
 
 // Add services to the container.
