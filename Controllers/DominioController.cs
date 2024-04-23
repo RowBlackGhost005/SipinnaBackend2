@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.DTO;
+using SipinnaBackend2.Services;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -16,9 +17,11 @@ namespace APISipinnaBackend.Controllers
     {
 
         public readonly DominioDAO dominiodao;
-        public DominioController(DominioDAO dominiodao)
+        public readonly LoggerBD logger;
+        public DominioController(DominioDAO dominiodao,LoggerBD logger)
         {
             this.dominiodao = dominiodao;
+            this.logger = logger;
         }
 
         // GET: api/Dominio
@@ -54,19 +57,19 @@ namespace APISipinnaBackend.Controllers
 
             try{
               var dominioActualizado = await dominiodao.updateDominio(dominio,id);
-
+            
+              await this.logger.crearLog("Usuario generico","Actualizacion de dominio"+id,"Exito: Se actualizo el sig: "+id);
               return Ok(dominioActualizado);
             }catch(Exception e){
                 if(!dominiodao.DominioExists(id)){
+                    await this.logger.crearLog("Usuario generico","Actualizacion de dominio","Error: no se encontro el sig dominio: "+id);
                     return NotFound();
                 }else{
+                    await this.logger.crearLog("Usuario generico","Actualizacion de dominio","Error: "+e.Message);
                     return BadRequest(e.Message);
                 }
-                
             }
-            
-            
-   
+
         }
 
         // POST: api/Dominio
@@ -79,9 +82,11 @@ namespace APISipinnaBackend.Controllers
 
                 var dominioCreado = await dominiodao.createDominio(dominio);
 
+                await this.logger.crearLog("Usuario generico","Creacion de dominio","Exito: Se agrego el sig: "+dominioCreado.iddominio);
                 return Ok(dominioCreado);    
 
             }catch(Exception e){
+                await this.logger.crearLog("Usuario generico","Creacion de dominio","Error: Se agrego el sig: "+e.ToString());                
                 return BadRequest(e.Message);
             }
 
