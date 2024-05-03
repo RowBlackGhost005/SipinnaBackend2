@@ -90,8 +90,10 @@ namespace APISipinnaBackend.Controllers
             try{
               var rubroActualizado = await rubrodao.updateRubro(rubroObj);
 
+              RubroDTO rubrodto = new RubroDTO(rubroActualizado.idrubro,rubroActualizado.rubro);
+
               await this.logger.crearLog("Usuario generico","Actualizacion de rubro: "+id,"Exito: Se actualizo el siguiente rubro: "+id);
-              return Ok(rubroActualizado);
+              return Ok(rubrodto);
             }catch(Exception e){
               await this.logger.crearLog("Usuario generico","Actualizacion de rubro","Error: "+e.Message);
               return BadRequest(e.Message);
@@ -119,8 +121,10 @@ namespace APISipinnaBackend.Controllers
             try{
                var rubroCreado = await rubrodao.createRubro(rubroObj);
 
+               RubroDTO rubrodto = new RubroDTO(rubroCreado.idrubro,rubroCreado.rubro);
+
                await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
-               return Ok(rubroCreado);
+               return Ok(rubrodto);
             }catch(Exception e){
                 await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);
                 return BadRequest(e.Message);
@@ -145,8 +149,10 @@ namespace APISipinnaBackend.Controllers
             try{
               var rubroCreado = await rubrodao.createRubroIndicador(rubroObj,idindicador);
 
+              RubroDTO rubrodto = new RubroDTO(rubroCreado.idrubro,rubroCreado.rubro);
+
               await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
-              return Ok(rubroCreado);                
+              return Ok(rubrodto);                
 
             }catch(Exception e){
                 await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);

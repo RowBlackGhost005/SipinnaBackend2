@@ -54,7 +54,7 @@ namespace APISipinnaBackend.Controllers
         // PUT: api/Indicador/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<Indicador>> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile? metadato, [FromForm] string dominioNavId)
+        public async Task<ActionResult<IndicadorDTO>> PutIndicador(int id,[FromForm] string nombre, [FromForm] IFormFile? metadato, [FromForm] string dominioNavId)
         {
             //verifica si indicador existe
             if(!indicadordao.IndicadorExists(id)){
@@ -83,8 +83,10 @@ namespace APISipinnaBackend.Controllers
             try{
                var indicadorActualizado = await indicadordao.updateIndicador(indicador);
 
+               IndicadorDTO dtoregresar = new IndicadorDTO(indicadorActualizado.idindicador,indicadorActualizado.nombre,indicadorActualizado.dominioNav);
+
                await this.logger.crearLog("Usuario generico","Actualizacion de indicador","Exito: Se actualizo el sig: "+id);
-               return Ok(indicadorActualizado);                
+               return Ok(dtoregresar);                
 
             }catch(Exception e){
                await this.logger.crearLog("Usuario generico","Actualizacion de indicador","Error: "+e.Message);
@@ -96,7 +98,7 @@ namespace APISipinnaBackend.Controllers
         // POST: api/Indicador
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Indicador>> PostIndicador([FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
+        public async Task<ActionResult<IndicadorDTO>> PostIndicador([FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
         {
             if (metadato == null){
                 await this.logger.crearLog("Usuario generico","Creacion de indicador","Error: "+"no se envio un archivo de indicador");
@@ -111,9 +113,10 @@ namespace APISipinnaBackend.Controllers
            
             try{
                var indicadorCreado = await indicadordao.createIndicador(indicador);
+               IndicadorDTO dtoregresar = new IndicadorDTO(indicadorCreado.idindicador,indicadorCreado.nombre,indicadorCreado.dominioNav);
 
                await this.logger.crearLog("Usuario generico","Creacion de indicador","Exito: Se agrego el sig: "+indicadorCreado.idindicador);
-               return Ok(indicadorCreado);
+               return Ok(dtoregresar);
             }catch(Exception e){
                 await this.logger.crearLog("Usuario generico","Creacion de indicador","Error: "+e.Message);
                return BadRequest(e.Message);
