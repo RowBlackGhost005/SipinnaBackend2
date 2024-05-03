@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.Utils;
 using SipinnaBackend2.Services;
+using SipinnaBackend2.DTO;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -27,7 +28,7 @@ namespace APISipinnaBackend.Controllers
 
         // GET: api/Indicador
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Indicador>>> GetindicadorTbl()
+        public async Task<ActionResult<IEnumerable<IndicadorDTO>>> GetindicadorTbl()
         {
             try{
                return Ok(await indicadordao.getIndicador());
@@ -39,7 +40,7 @@ namespace APISipinnaBackend.Controllers
 
         // GET: api/Indicador/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Indicador>> GetIndicador(int id)
+        public async Task<ActionResult<IndicadorDTO>> GetIndicador(int id)
         {
            try{
                 var indicador = await indicadordao.getIndicadorId(id);
@@ -147,9 +148,18 @@ namespace APISipinnaBackend.Controllers
 
         [HttpGet]
         [Route("descargas")]
-        public async Task<IActionResult> downloadMetadato(string ruta){
-            ArchivosManejo archivosM = new ArchivosManejo();
-            return await archivosM.obtenerArchivo(ruta);
+        public async Task<IActionResult> downloadMetadato(int id){
+
+            try{
+                Indicador indicador = await indicadordao.getIndicadorId(id);
+
+                ArchivosManejo archivosM = new ArchivosManejo();
+                return await archivosM.obtenerArchivo(indicador.metadato);
+
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
+
         }
 
         

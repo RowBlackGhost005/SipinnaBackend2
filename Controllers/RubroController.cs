@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.Utils;
 using SipinnaBackend2.Services;
+using SipinnaBackend2.DTO;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -28,7 +29,7 @@ namespace APISipinnaBackend.Controllers
         
         // GET: api/Rubro
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rubro>>> GetrubroTbl()
+        public async Task<ActionResult<IEnumerable<RubroDTO>>> GetrubroTbl()
         {
             try{
               return Ok(await rubrodao.getRubro());
@@ -182,9 +183,16 @@ namespace APISipinnaBackend.Controllers
 
         [HttpGet]
         [Route("descargas")]
-        public async Task<IActionResult> downloadDatos(string ruta){
-            ArchivosManejo archivosM = new ArchivosManejo();
-            return await archivosM.obtenerArchivo(ruta);
+        public async Task<IActionResult> downloadDatos(int id){
+            try{
+                Rubro rubro = await rubrodao.getRubroId(id);
+                
+                ArchivosManejo archivosM = new ArchivosManejo();
+                return await archivosM.obtenerArchivo(rubro.datos);
+
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
         }        
       
     }

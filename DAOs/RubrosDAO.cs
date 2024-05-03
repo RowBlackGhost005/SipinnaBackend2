@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
+using SipinnaBackend2.DTO;
 
 public class RubrosDAO{
     
@@ -13,9 +14,16 @@ public class RubrosDAO{
     /// </summary>
     /// <returns>Rubros en formato de lista</returns>
     /// <exception cref="Exception">Excepcion si ocurre algun error durante la operacion</exception>
-    public async Task<IEnumerable<Rubro>> getRubro(){
+    public async Task<IEnumerable<RubroDTO>> getRubro(){
         try{
-            return await _context.rubroTbl.ToListAsync();
+                var resultadoConsulta = from rubros in _context.rubroTbl
+                select new RubroDTO
+                {
+                    idrubro = rubros.idrubro,
+                    rubro = rubros.rubro
+                };
+
+            return resultadoConsulta;
         }catch(Exception ex){
             throw new Exception(ex.Message);
         }
@@ -59,8 +67,7 @@ public class RubrosDAO{
                 select new Rubro
                 {
                     idrubro = rubro.idrubro,
-                    rubro = rubro.rubro,
-                    datos = rubro.datos
+                    rubro = rubro.rubro
                 };
 
             return resultadoConsulta;
