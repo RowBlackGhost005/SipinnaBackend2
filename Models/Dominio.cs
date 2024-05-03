@@ -9,9 +9,10 @@ public class Dominio{
 
     }
 
-    public Dominio(Int32 iddominio, string nombre){
+    public Dominio(Int32 iddominio, string nombre,bool estado){
         this.iddominio = iddominio;
-        this.nombre = nombre;    
+        this.nombre = nombre;   
+        this.estado = estado; 
     }
 
     [Key]
@@ -20,8 +21,11 @@ public class Dominio{
     [Column(TypeName = "varchar(120)")]
     public string nombre { get; set;}
 
+    [Column(TypeName = "TINYINT(1)")]
+    public bool estado { get; set;}
+
     public override string ToString() {
-        return $"id: {iddominio}, nombre: {nombre}";
+        return $"id: {iddominio}, nombre: {nombre}, estado: {estado}";
     }
 
 }
