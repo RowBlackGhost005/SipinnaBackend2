@@ -58,7 +58,7 @@ namespace APISipinnaBackend.Controllers
             try{
               var dominioActualizado = await dominiodao.updateDominio(dominio,id);
             
-              await this.logger.crearLog("Usuario generico","Actualizacion de dominio"+id,"Exito: Se actualizo el sig: "+id);
+              await this.logger.crearLog("Usuario generico","Actualizacion de dominio","Exito: Se actualizo el sig: "+id);
               return Ok(dominioActualizado);
             }catch(Exception e){
                 if(!dominiodao.DominioExists(id)){

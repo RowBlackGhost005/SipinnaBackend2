@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.Utils;
+using SipinnaBackend2.Services;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -16,9 +17,12 @@ namespace APISipinnaBackend.Controllers
     {
         private readonly RubrosDAO rubrodao;
 
-        public RubroController(RubrosDAO rubrodao)
+        public readonly LoggerBD logger;
+
+        public RubroController(RubrosDAO rubrodao,LoggerBD logger)
         {
             this.rubrodao = rubrodao;
+            this.logger = logger;
         }
 
         
@@ -65,6 +69,7 @@ namespace APISipinnaBackend.Controllers
         {
             if (!rubrodao.RubroExists(id))
             {
+                await this.logger.crearLog("Usuario generico","Actualizacion de rubro","Error: "+"no se encontro el rubro");
                 return BadRequest("No se ha encontrado el rubro");
             }
 
@@ -84,8 +89,10 @@ namespace APISipinnaBackend.Controllers
             try{
               var rubroActualizado = await rubrodao.updateRubro(rubroObj);
 
+              await this.logger.crearLog("Usuario generico","Actualizacion de rubro: "+id,"Exito: Se actualizo el siguiente rubro: "+id);
               return Ok(rubroActualizado);
             }catch(Exception e){
+              await this.logger.crearLog("Usuario generico","Actualizacion de rubro","Error: "+e.Message);
               return BadRequest(e.Message);
             }
 
@@ -99,6 +106,7 @@ namespace APISipinnaBackend.Controllers
         public async Task<ActionResult<Rubro>> PostRubro([FromForm] string rubro, [FromForm] IFormFile datos)
         {
             if(datos == null){
+                await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+"no se envio un archivo de rubro");
                 return BadRequest("No se envio ningun archivo");
             }
 
@@ -110,8 +118,10 @@ namespace APISipinnaBackend.Controllers
             try{
                var rubroCreado = await rubrodao.createRubro(rubroObj);
 
+               await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
                return Ok(rubroCreado);
             }catch(Exception e){
+                await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);
                 return BadRequest(e.Message);
             }
 
@@ -122,6 +132,7 @@ namespace APISipinnaBackend.Controllers
         public async Task<ActionResult<Rubro>> PostRubroIndicador([FromForm] string rubro, [FromForm] IFormFile datos,[FromForm] int idindicador)
         {
             if(datos == null){
+                await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+"no se envio un archivo de rubro");
                 return BadRequest("No se envio ningun archivo");
             }
 
@@ -132,9 +143,12 @@ namespace APISipinnaBackend.Controllers
 
             try{
               var rubroCreado = await rubrodao.createRubroIndicador(rubroObj,idindicador);
+
+              await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
               return Ok(rubroCreado);                
 
             }catch(Exception e){
+                await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);
                 return BadRequest(e.Message);
             }
 

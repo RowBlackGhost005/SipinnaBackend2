@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.Utils;
+using SipinnaBackend2.Services;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -16,10 +17,12 @@ namespace APISipinnaBackend.Controllers
     {
         public readonly IndicadorDAO indicadordao;
 
-        public IndicadorController(IndicadorDAO indicadordao)
+        public readonly LoggerBD logger;
+
+        public IndicadorController(IndicadorDAO indicadordao,LoggerBD logger)
         {
             this.indicadordao = indicadordao;
-            
+            this.logger = logger;
         }
 
         // GET: api/Indicador
@@ -54,6 +57,7 @@ namespace APISipinnaBackend.Controllers
         {
             //verifica si indicador existe
             if(!indicadordao.IndicadorExists(id)){
+                await this.logger.crearLog("Usuario generico","Actualizacion de indicador","Error: "+"indicador no encontrado");
                 return BadRequest("No se encontro el indicador");
             }
 
@@ -78,9 +82,11 @@ namespace APISipinnaBackend.Controllers
             try{
                var indicadorActualizado = await indicadordao.updateIndicador(indicador);
 
+               await this.logger.crearLog("Usuario generico","Actualizacion de indicador","Exito: Se actualizo el sig: "+id);
                return Ok(indicadorActualizado);                
 
             }catch(Exception e){
+               await this.logger.crearLog("Usuario generico","Actualizacion de indicador","Error: "+e.Message);
                return BadRequest(e.Message);
             }
 
@@ -92,6 +98,7 @@ namespace APISipinnaBackend.Controllers
         public async Task<ActionResult<Indicador>> PostIndicador([FromForm] string nombre, [FromForm] IFormFile metadato, [FromForm] string dominioNavId)
         {
             if (metadato == null){
+                await this.logger.crearLog("Usuario generico","Creacion de indicador","Error: "+"no se envio un archivo de indicador");
                 return BadRequest("No se envio ningun archivo");
             }
 
@@ -104,8 +111,10 @@ namespace APISipinnaBackend.Controllers
             try{
                var indicadorCreado = await indicadordao.createIndicador(indicador);
 
+               await this.logger.crearLog("Usuario generico","Creacion de indicador","Exito: Se agrego el sig: "+indicadorCreado.idindicador);
                return Ok(indicadorCreado);
             }catch(Exception e){
+                await this.logger.crearLog("Usuario generico","Creacion de indicador","Error: "+e.Message);
                return BadRequest(e.Message);
             }
 
