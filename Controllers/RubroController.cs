@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
 using SipinnaBackend2.Utils;
 using SipinnaBackend2.Services;
+using SipinnaBackend2.DTO;
 
 namespace APISipinnaBackend.Controllers
 {
@@ -28,7 +29,7 @@ namespace APISipinnaBackend.Controllers
         
         // GET: api/Rubro
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rubro>>> GetrubroTbl()
+        public async Task<ActionResult<IEnumerable<RubroDTO>>> GetrubroTbl()
         {
             try{
               return Ok(await rubrodao.getRubro());
@@ -89,8 +90,10 @@ namespace APISipinnaBackend.Controllers
             try{
               var rubroActualizado = await rubrodao.updateRubro(rubroObj);
 
+              RubroDTO rubrodto = new RubroDTO(rubroActualizado.idrubro,rubroActualizado.rubro);
+
               await this.logger.crearLog("Usuario generico","Actualizacion de rubro: "+id,"Exito: Se actualizo el siguiente rubro: "+id);
-              return Ok(rubroActualizado);
+              return Ok(rubrodto);
             }catch(Exception e){
               await this.logger.crearLog("Usuario generico","Actualizacion de rubro","Error: "+e.Message);
               return BadRequest(e.Message);
@@ -118,8 +121,10 @@ namespace APISipinnaBackend.Controllers
             try{
                var rubroCreado = await rubrodao.createRubro(rubroObj);
 
+               RubroDTO rubrodto = new RubroDTO(rubroCreado.idrubro,rubroCreado.rubro);
+
                await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
-               return Ok(rubroCreado);
+               return Ok(rubrodto);
             }catch(Exception e){
                 await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);
                 return BadRequest(e.Message);
@@ -144,8 +149,10 @@ namespace APISipinnaBackend.Controllers
             try{
               var rubroCreado = await rubrodao.createRubroIndicador(rubroObj,idindicador);
 
+              RubroDTO rubrodto = new RubroDTO(rubroCreado.idrubro,rubroCreado.rubro);
+
               await this.logger.crearLog("Usuario generico","Creacion de rubro","Exito: Se agrego el sig: "+rubroCreado.idrubro);
-              return Ok(rubroCreado);                
+              return Ok(rubrodto);                
 
             }catch(Exception e){
                 await this.logger.crearLog("Usuario generico","Creacion de rubro","Error: "+e.Message);
@@ -182,9 +189,16 @@ namespace APISipinnaBackend.Controllers
 
         [HttpGet]
         [Route("descargas")]
-        public async Task<IActionResult> downloadDatos(string ruta){
-            ArchivosManejo archivosM = new ArchivosManejo();
-            return await archivosM.obtenerArchivo(ruta);
+        public async Task<IActionResult> downloadDatos(int id){
+            try{
+                Rubro rubro = await rubrodao.getRubroId(id);
+                
+                ArchivosManejo archivosM = new ArchivosManejo();
+                return await archivosM.obtenerArchivo(rubro.datos);
+
+            }catch(Exception e){
+                return BadRequest(e.Message);
+            }
         }        
       
     }

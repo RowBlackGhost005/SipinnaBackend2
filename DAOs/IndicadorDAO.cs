@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SipinnaBackend2.Models;
+using SipinnaBackend2.DTO;
 
 public class IndicadorDAO{
     
@@ -13,9 +14,18 @@ public class IndicadorDAO{
     /// </summary>
     /// <returns>Lista de objetos indicador</returns>
     /// <exception cref="Exception">Excepcion en caso de operacion fallida</exception>
-    public async Task<IEnumerable<Indicador>> getIndicador(){
+    public async Task<IEnumerable<IndicadorDTO>> getIndicador(){
         try{
-            return await _context.indicadorTbl.ToListAsync();
+            var resultadoConsulta = from indicador in _context.indicadorTbl
+                join dominio in _context.dominioTbl on indicador.dominio equals dominio.iddominio
+                select new IndicadorDTO
+                {
+                    idindicador = indicador.idindicador,
+                    nombre = indicador.nombre,
+                    dominioNav = dominio,
+                    dominio = dominio.iddominio
+                };    
+            return resultadoConsulta;
         }catch(Exception ex){
             throw new Exception(ex.Message);
         }
