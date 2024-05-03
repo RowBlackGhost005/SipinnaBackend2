@@ -75,7 +75,7 @@ namespace APISipinnaBackend.Controllers
                 indicador.metadato = ruta;
             }
 
-            Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
+            Dominio dominio = new Dominio(int.Parse(dominioNavId),"",true); 
             indicador.nombre = nombre;
             indicador.dominioNav = dominio;
 
@@ -105,7 +105,7 @@ namespace APISipinnaBackend.Controllers
             ArchivosManejo archivosM = new ArchivosManejo();
             var ruta = await archivosM.guardarArchivo(metadato,"Metadatos");
             
-            Dominio dominio = new Dominio(int.Parse(dominioNavId),""); 
+            Dominio dominio = new Dominio(int.Parse(dominioNavId),"",true); 
             Indicador indicador = new Indicador(0,nombre,ruta,dominio);
            
             try{

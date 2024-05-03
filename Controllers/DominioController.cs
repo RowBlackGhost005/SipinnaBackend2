@@ -78,7 +78,7 @@ namespace APISipinnaBackend.Controllers
         {
 
             try{
-                Dominio dominio = new Dominio(0,dominiodto.nombre);
+                Dominio dominio = new Dominio(0,dominiodto.nombre,dominiodto.estado);
 
                 var dominioCreado = await dominiodao.createDominio(dominio);
 

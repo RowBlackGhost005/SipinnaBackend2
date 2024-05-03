@@ -57,10 +57,15 @@ public class DominioDAO{
             }
 
             if(dominiodto.nombre == ""){
-                throw new Exception("Valor nulo enviado");
+                throw new Exception("Nombre nulo enviado");
+            }
+
+            if(dominiodto.estado == null){
+                throw new Exception("Valor de estado nulo enviado");
             }
 
             dominio.nombre = dominiodto.nombre;
+            dominio.estado = dominiodto.estado;
             
             _context.Entry(dominio).State = EntityState.Modified;
 
